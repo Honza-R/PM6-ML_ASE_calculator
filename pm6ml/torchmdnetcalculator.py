@@ -26,7 +26,6 @@ class TorchMDNetCalculator(Calculator):
         # Load the model if not already available
         self.model_index = (model_file, device)
         if not self.model_index in self.__class__.models:
-            print("Loading model")
             # Device to be used
             if device:
                 new_device = torch.device(device)

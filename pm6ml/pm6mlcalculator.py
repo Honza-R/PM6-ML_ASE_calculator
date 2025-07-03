@@ -1,7 +1,10 @@
 #!/usr/bin/env python3
 
 from ase.calculators.mixing import SumCalculator
+
 from ase.calculators.mopac import MOPAC
+# Modify MOPAC calculator to hide also stdout
+MOPAC._legacy_default_command = 'mopac PREFIX.mop 2> /dev/null > /dev/null'
 
 # DFTD3 from simple-dftd3 package:
 from dftd3.ase import DFTD3
