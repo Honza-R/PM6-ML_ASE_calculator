@@ -13,10 +13,101 @@ from ase.calculators.mopac import MOPAC
 # DFTD3 from simple-dftd3 package:
 from dftd3.ase import DFTD3
 
+# ===============================================================================
+# TorchMDNet calculator
+
+import numpy as np
+# Torch and TorchMD-NET
+import torch
+from torchmdnet.models.model import load_model
+
+
+from ase.calculators.calculator import Calculator, all_changes
+
+class TorchMDNet(Calculator):
+
+    implemented_properties = ['energy', 'forces']
+
+    # Model - each model is loaded once
+    models = {}
+
+    def __init__(self, model_file, device=None):
+        """
+        Parameters
+        ----------
+        model_file: string
+          Path to the model checkpoint file
+        device: None or str
+          Device used by Torch. None for default selection. "cpu" to enforce CPU.
+
+        """
+        # Parent init
+        Calculator.__init__(self)
+
+        # Load the model if not already available
+        self.model_index = (model_file, device)
+        if not self.model_index in TorchMDNet.models:
+            print("Loading model")
+            # Device to be used
+            if device:
+                new_device = torch.device(device)
+            else:
+                new_device = torch.get_default_device()
+            # Load model
+            new_model = load_model(model_file, derivative=True)
+            new_model.to(new_device)
+            TorchMDNet.models[self.model_index] = (new_model, new_device)
+
+
+
+    def calculate(
+        self,
+        atoms=None,
+        properties=None,
+        system_changes=all_changes,
+    ):
+        if properties is None:
+            properties = self.implemented_properties
+
+        Calculator.calculate(self, atoms, properties, system_changes)
+
+        natoms = len(self.atoms)
+
+
+
+        # Construct atom types
+        z_to_atype = {35: 1, 6: 3, 20: 5, 17: 7, 9: 9, 1: 10, 53: 12, 19: 13, 3: 14, 12: 15, 7: 17, 11: 19, 8: 21, 15: 23, 16: 26}
+        a_types = [ z_to_atype[z] for z in self.atoms.get_atomic_numbers() ]
+
+        # Construct coordinates
+        coords = self.atoms.positions
+
+        # TorchMD-NET calculation
+        t_ene, t_forces = self.energy_forces(a_types, coords)
+
+        # Store results
+        self.results['energy'] = t_ene * ase.units.kJ / ase.units.mol
+        #!# Forces - set to zero for now
+        forces = np.zeros((natoms, 3))
+        self.results['forces'] = forces
+
+    def energy_forces(self, elem, geom):
+        this_model, this_device = TorchMDNet.models[self.model_index]
+        types = torch.tensor(elem, dtype=torch.long)
+        types = types.to(this_device)
+        pos = torch.tensor(geom, dtype=torch.float32)
+        pos = pos.to(this_device)
+        energy, forces = this_model.forward(types, pos)  # ,batch)
+        forces = forces.detach().numpy()
+        return (energy.item(), forces)
+
+
+
+# ===============================================================================
 
 class PM6MLCalculator(SumCalculator):
 
-    def __init__(self):
+    def __init__(self, model_file, device=None):
         calcs = [
             MOPAC(label="calc_mopac", method="PM6"),
             # Built-in ASE calculator, needs dftd3 executable:
@@ -33,6 +124,8 @@ class PM6MLCalculator(SumCalculator):
                     "alp": 16.0,
                 },
             ),
+            TorchMDNet(model_file=model_file, device=device)
+
         ]
         super().__init__(calcs)
 
@@ -49,9 +142,10 @@ atoms_b = atoms[[3, 4, 5]]
 atoms_b.info.update({"charge": 0, "spin": 1})
 
 # Assign the calculator
-atoms.calc = PM6MLCalculator()
-atoms_a.calc = PM6MLCalculator()
-atoms_b.calc = PM6MLCalculator()
+model_ckpt = "/home/rezac/Github/PUBLIC/mopac-ml/models/PM6-ML_correction_seed8_best.ckpt"
+atoms.calc = PM6MLCalculator(model_ckpt)
+atoms_a.calc = PM6MLCalculator(model_ckpt)
+atoms_b.calc = PM6MLCalculator(model_ckpt)
 
 energy = atoms.get_potential_energy() / ase.units.kcal * ase.units.mol
 energy_a = atoms_a.get_potential_energy() / ase.units.kcal * ase.units.mol
