@@ -1,0 +1,5 @@
+job: energy
+interface: mopac
+method: pm6
+geometry: wd.xyz
+mopac_precise: yes
