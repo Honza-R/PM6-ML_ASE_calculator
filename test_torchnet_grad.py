@@ -6,7 +6,9 @@ from pm6ml import TorchMDNetCalculator
 
 atoms = ase.io.read("wd.xyz", format="xyz", index=":")[0]
 
-model_ckpt = "/home/rezac/Github/PUBLIC/mopac-ml/models/PM6-ML_correction_seed8_best.ckpt"
+model_ckpt = (
+    "/home/rezac/Github/PUBLIC/mopac-ml/models/PM6-ML_correction_seed8_best.ckpt"
+)
 
 # Gradient test
 # Print analytical forces:

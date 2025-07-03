@@ -3,9 +3,10 @@ from torchmdnet.models.model import load_model
 from ase.calculators.calculator import Calculator, all_changes
 import ase.units
 
+
 class TorchMDNetCalculator(Calculator):
 
-    implemented_properties = ['energy', 'forces']
+    implemented_properties = ["energy", "forces"]
 
     # Model - each model is loaded once
     models = {}
@@ -51,8 +52,24 @@ class TorchMDNetCalculator(Calculator):
         Calculator.calculate(self, atoms, properties, system_changes)
 
         # Prepare atom types
-        z_to_atype = {35: 1, 6: 3, 20: 5, 17: 7, 9: 9, 1: 10, 53: 12, 19: 13, 3: 14, 12: 15, 7: 17, 11: 19, 8: 21, 15: 23, 16: 26}
-        a_types = [ z_to_atype[z] for z in self.atoms.get_atomic_numbers() ]
+        z_to_atype = {
+            35: 1,
+            6: 3,
+            20: 5,
+            17: 7,
+            9: 9,
+            1: 10,
+            53: 12,
+            19: 13,
+            3: 14,
+            12: 15,
+            7: 17,
+            11: 19,
+            8: 21,
+            15: 23,
+            16: 26,
+        }
+        a_types = [z_to_atype[z] for z in self.atoms.get_atomic_numbers()]
 
         # Prepare coordinates
         coords = self.atoms.positions
@@ -61,11 +78,11 @@ class TorchMDNetCalculator(Calculator):
         t_ene, t_forces = self.energy_forces(a_types, coords)
 
         # Store energy
-        self.results['energy'] = t_ene * ase.units.kJ / ase.units.mol
+        self.results["energy"] = t_ene * ase.units.kJ / ase.units.mol
 
         #!# Forces - set to zero for now
         natoms = len(self.atoms)
-        self.results['forces'] = t_forces * ase.units.kJ / ase.units.mol
+        self.results["forces"] = t_forces * ase.units.kJ / ase.units.mol
 
     def energy_forces(self, elem, geom):
         this_model, this_device = self.__class__.models[self.model_index]
@@ -76,4 +93,3 @@ class TorchMDNetCalculator(Calculator):
         energy, forces = this_model.forward(types, pos)  # ,batch)
         forces = forces.detach().numpy()
         return (energy.item(), forces)
-
