@@ -8,8 +8,7 @@ This package provides an [Atomic Simulation Environment (ASE)](https://wiki.fysi
 Installation
 ------------
 
-The PM6-ML calculator uses MOPAC, D3 dispersion and TorchMD-NET. All the dependencies can be installed using conda (preferably in a clean environment):
-
+The PM6-ML calculator uses MOPAC, D3 dispersion and TorchMD-NET. The MOPAC executable, named `mopac`, must be available in the search path. All the dependencies, including the MOPAC binary, can be installed using conda (preferably in a clean environment):
 ```
 conda install -c conda-forge ase mopac simple-dftd3 dftd3-python torchmd-net pytest
 ```
