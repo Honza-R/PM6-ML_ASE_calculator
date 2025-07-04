@@ -35,8 +35,13 @@ pip install .
 Testing
 -------
 
-Prior to running the tests, an environment variable `PM6ML_MODEL` must be set, pointing to the model checkpoint file for the PM6-ML correction. Then the tests can be run with:
+Prior to running the tests, an environment variable `PM6ML_MODEL` must be set, pointing to the model checkpoint file for the PM6-ML correction. Then the tests can be then run with:
 
 ```
-pytest tests
+pytest
 ```
+
+License
+-------
+
+The pm6ml package is licensed under LGPLv2.1 or later, the same license as ASE.

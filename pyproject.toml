@@ -9,12 +9,19 @@ description = "ASE calculator implementing PM6-ML"
 authors = [
 	{name = "Jan Rezac"}
 ]
-license = {text = "MIT"}
+license = "LGPL-2.1-or-later"
+license-files = ["LICENSE"]
 readme = "README.md"
-requires-python = ">=3.8"
+requires-python = ">=3.9"
 dependencies = [
 	"ase"
 ]
 
+[project.optional-dependencies]
+test = ["pytest>=7.0.0"]
+
 [project.urls]
 "Homepage" = "https://github.com/Honza-R/PM6-ML_ASE_calculator"
+
+[tool.pytest.ini_options]
+testpaths = ['tests']
