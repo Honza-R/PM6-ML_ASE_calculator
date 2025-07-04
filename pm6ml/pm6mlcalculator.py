@@ -1,4 +1,6 @@
-#!/usr/bin/env python3
+"""
+This module provides the PM6-ML calculator.
+"""
 
 import os
 from ase.calculators.mixing import SumCalculator
@@ -16,6 +18,7 @@ MOPAC._legacy_default_command = "mopac PREFIX.mop 2> /dev/null > /dev/null"
 
 class PM6MLCalculator(SumCalculator):
 
+    # Dispersion correction parameters
     PM6ML_D3_PARAMETERS = {
         "s6": 1.0,
         "s8": 0.3908,
@@ -26,6 +29,19 @@ class PM6MLCalculator(SumCalculator):
     }
 
     def __init__(self, model_file=None, device=None, mopac_calc_label="calc_mopac"):
+        """
+        Parameters:
+
+        model_file: None or str
+           Path to the model checkpoint file. If None, the path is read from the
+           PM6ML_MODEL environment variable.
+        device: None or str
+           Device used by Torch. None for automatic selection. "cpu" to enforce CPU.
+        mopac_calc_label: str
+           Label for the mopac calculator, used as a prefix of the mopac input
+           and output files.
+
+        """
         # Look for model file
         if model_file:
             # If model is passed as the argument, use it
@@ -54,5 +70,6 @@ class PM6MLCalculator(SumCalculator):
             # Ml correction from TorchMDNet
             TorchMDNetCalculator(model_file=model_file, device=device),
         ]
+
         # Initialize the calculators
         super().__init__(calcs)

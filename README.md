@@ -5,25 +5,17 @@ This package provides [Atomic Simulation Environment (ASE)](https://wiki.fysik.d
 
 **The model file containing the parameters for the ML corrections must be installed separately.** It is available as a part of the [MOPAC-ML repository](https://github.com/Honza-R/mopac-ml). The path to the model file has to be provided in the code, or via an environment variable. See the section ML Correction Models below.
 
-- [ ] Experiment with the dependencies
-- [ ] Write better readme
+Installation
+------------
 
-Setup
------
-
-The PM6-ML calculator uses MOPAC, D3 dispersion and TorchMD-NET. All these can be installed using conda:
+The PM6-ML calculator uses MOPAC, D3 dispersion and TorchMD-NET. All the dependencies can be installed using conda (preferably in a clean environment):
 
 ```
-conda create -n PM6-ML_ASE_calculator
-conda activate PM6-ML_ASE_calculator
-conda install -c conda-forge ase
-conda install -c conda-forge mopac
-conda install -c conda-forge simple-dftd3 dftd3-python
-conda install -c conda-forge torchmd-net
-conda install pytest
+conda install -c conda-forge ase mopac simple-dftd3 dftd3-python torchmd-net pytest
 ```
 
-Install the calculator
+The PM6-ML calculator is then installed by running the following command in the root of this repository:
+
 ```
 pip install .
 ```
@@ -48,6 +40,18 @@ atoms.calc = PM6MLCalculator()
 Example
 -------
 
+Assuming the PM6ML_MODEL environment variable is configured, the following python code would run a simple calculation on a water molecule:
+
+```
+from ase.build import molecule
+from pm6ml import PM6MLCalculator
+
+atoms = molecule('H2O')
+atoms.calc = PM6MLCalculator()
+energy = atoms.get_potential_energy()
+print(f"Enegy of a water molecule: {energy} eV")
+```
+
 Testing
 -------
 
@@ -62,7 +66,6 @@ How to cite
 
 When reporting results computed with the PM6-ML method, please cite the paper on it:<br>
 Nováček M., Řezáč J., *J. Chem. Theory Comput.* **2005**, 21, 2, 678-690. [DOI: 10.1021/acs.jctc.4c01330](https://doi.org/10.1021/acs.jctc.4c01330)
-
 
 License
 -------
