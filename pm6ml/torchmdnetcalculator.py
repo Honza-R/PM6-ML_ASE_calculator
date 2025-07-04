@@ -15,7 +15,7 @@ class TorchMDNetCalculator(Calculator):
         """
         Parameters
         ----------
-        model_file: string
+        model_file: str
           Path to the model checkpoint file
         device: None or str
           Device used by Torch. None for default selection. "cpu" to enforce CPU.
