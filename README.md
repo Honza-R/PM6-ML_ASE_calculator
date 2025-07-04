@@ -5,7 +5,7 @@ This package provides an [Atomic Simulation Environment (ASE)](https://wiki.fysi
 
 **The model file containing the parameters for the ML correction must be installed separately** and is available as part of the [MOPAC-ML repository](https://github.com/Honza-R/mopac-ml). The path to the model file must be provided in the code or via an environment variable. See the ML Correction Models section below.
 
-There are other ways to run PM6-ML calculations. [MOPAC-ML](https://github.com/Honza-R/mopac-ml) is an MOPAC wrapper that applies the corrections to any MOPAC calculation. The [Cuby framework](http://cuby4.molecular.cz/interface_torchmdnet.html) provides a modular implementation for the [automated processing of benchmark datasets](https://doi.org/10.1063/5.0203372) ad more. PM6-ML is also available in the [pDynamo3](https://github.com/pdynamo/pDynamo3) package, which focuses on QM/MM MD simulations.
+There are also other ways to run PM6-ML calculations. [MOPAC-ML](https://github.com/Honza-R/mopac-ml) is a wrapper that applies the corrections to any MOPAC calculation. The [Cuby framework](http://cuby4.molecular.cz/interface_torchmdnet.html) provides a modular implementation for the [automated processing of benchmark datasets](https://doi.org/10.1063/5.0203372) ad more. PM6-ML is also available in the [pDynamo3](https://github.com/pdynamo/pDynamo3) package, which focuses on QM/MM MD simulations.
 
 Installation
 ------------
