@@ -25,7 +25,7 @@ class PM6MLCalculator(SumCalculator):
         "alp": 16.0,
     }
 
-    def __init__(self, model_file=None, device=None):
+    def __init__(self, model_file=None, device=None, mopac_calc_label="calc_mopac"):
         # Look for model file
         if model_file:
             # If model is passed as the argument, use it
@@ -48,7 +48,7 @@ class PM6MLCalculator(SumCalculator):
         # List of calculators to combine
         calcs = [
             # PM6 calculation in MOPAC
-            MOPAC(label="calc_mopac", method="PM6"),
+            MOPAC(label=mopac_calc_label, method="PM6"),
             # DFTD3 from simple-dftd3 package:
             DFTD3(damping="d3bj", params_tweaks=self.__class__.PM6ML_D3_PARAMETERS),
             # Ml correction from TorchMDNet
