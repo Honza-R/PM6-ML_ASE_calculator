@@ -1,0 +1,20 @@
+[build-system]
+requires = ["setuptools>=42", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "pm6ml"
+version = "0.1"
+description = "ASE calculator implementing PM6-ML"
+authors = [
+	{name = "Jan Rezac"}
+]
+license = {text = "MIT"}
+readme = "README.md"
+requires-python = ">=3.6"
+dependencies = [
+	"ase"
+]
+
+[project.urls]
+"Homepage" = "https://github.com/Honza-R/PM6-ML_ASE_calculator"

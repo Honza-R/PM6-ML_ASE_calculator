@@ -1,2 +1,4 @@
 calc_mopac.*
 __pycache__
+build/
+pm6ml.egg-info/
