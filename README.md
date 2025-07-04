@@ -1,9 +1,9 @@
 PM6-ML ASE calculator
 =====================
 
-This package provides [Atomic Simulation Environment (ASE)](https://wiki.fysik.dtu.dk/ase/index.html) calculator implementing [PM6-ML](https://pubs.acs.org/doi/10.1021/acs.jctc.4c01330), a Δ-ML method combining PM6 semiempirical quantum-chemical calulation with a machine learning correction.
+This package provides an [Atomic Simulation Environment (ASE)](https://wiki.fysik.dtu.dk/ase/index.html) calculator that implements the [PM6-ML](https://pubs.acs.org/doi/10.1021/acs.jctc.4c01330) method, which combines a PM6 semiempirical quantum-chemical calculation with a machine learning correction. 
 
-**The model file containing the parameters for the ML corrections must be installed separately.** It is available as a part of the [MOPAC-ML repository](https://github.com/Honza-R/mopac-ml). The path to the model file has to be provided in the code, or via an environment variable. See the section ML Correction Models below.
+**The model file containing the parameters for the ML correction must be installed separately** and is available as part of the [MOPAC-ML repository](https://github.com/Honza-R/mopac-ml). The path to the model file must be provided in the code or via an environment variable. See the ML Correction Models section below.
 
 Installation
 ------------
@@ -23,15 +23,15 @@ pip install .
 ML Correction Models
 --------------------
 
-The parameters for the ML correction used in PM6-ML, the model checkpoint file, are provided separately in the [MOPAC-ML repository](https://github.com/Honza-R/mopac-ml) and licensed under the Academic Software Licence provided therein. To use the PM6-ML calculator, download at least the default model, `PM6-ML_correction_seed8_best.ckpt`, from there.
+The parameters for the ML correction used in the PM6-ML, the model checkpoint file, are provided separately in the [MOPAC-ML repository](https://github.com/Honza-R/mopac-ml) and are licensed under the Academic Software License provided therein. To use the PM6-ML calculator, download at least the default model, `PM6-ML_correction_seed8_best.ckpt`, from there.
 
-The path to the model file has to be passed to the calculator. One option is to hardcode it in the initialization of the calculator, e.g. as
+The path to the model file must be provided to the calculator. One option is to hardcode the path in the calculator's initialization, e.g., as
 
 ```
 atoms.calc = PM6MLCalculator(model_file="your_path_to/PM6-ML_correction_seed8_best.ckpt")
 ```
 
-A more portable option is to set the path to the model in an evironment variable `PM6ML_MODEL`, e.g. using `export PM6ML_MODEL=your_path_to/PM6-ML_correction_seed8_best.ckpt` in bash, and then initializing the model without any arguments: 
+A more portable option is to set the path to the model in the environment variable `PM6ML_MODEL`, for example using `export PM6ML_MODEL=your_path_to/PM6-ML_correction_seed8_best.ckpt` in bash. Then,  the calculator can be initialized without any arguments:
 
 ```
 atoms.calc = PM6MLCalculator()
@@ -40,7 +40,7 @@ atoms.calc = PM6MLCalculator()
 Example
 -------
 
-Assuming the PM6ML_MODEL environment variable is configured, the following python code would run a simple calculation on a water molecule:
+The following Python code would run a simple calculation on a water molecule, assuming the `PM6ML_MODEL` environment variable is configured:
 
 ```
 from ase.build import molecule
@@ -55,7 +55,7 @@ print(f"Enegy of a water molecule: {energy} eV")
 Testing
 -------
 
-Prior to running the tests, an environment variable `PM6ML_MODEL` must be set, pointing to the model checkpoint file for the PM6-ML correction. Then the tests can be then run with:
+Before running the tests, set the environment variable `PM6ML_MODEL` to point to the PM6-ML correction model checkpoint file. Then, run the tests with:
 
 ```
 pytest
