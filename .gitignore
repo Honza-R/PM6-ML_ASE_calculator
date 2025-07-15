@@ -2,3 +2,5 @@ calc_mopac.*
 __pycache__
 build/
 pm6ml.egg-info/
+LOCAL_NOTES_*.md
+LOCAL_ENV_*.sh

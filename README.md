@@ -12,7 +12,8 @@ Installation
 
 The PM6-ML calculator uses the PM6 implementation in MOPAC, the D3 dispersion correction, and the TorchMD-NET ML potential. The MOPAC executable, named `mopac`, must be available in the search path. All the dependencies, including the MOPAC binary, can be installed using conda (preferably in a clean environment):
 ```
-conda install -c conda-forge ase mopac simple-dftd3 dftd3-python torchmd-net pytest
+conda install -c conda-forge ase simple-dftd3 dftd3-python torchmd-net pytest
+conda install conda-forge::mopac
 ```
 
 The PM6-ML calculator is then installed by running the following command in the root of this repository:
