@@ -13,10 +13,10 @@ license = "LGPL-2.1-or-later"
 license-files = ["LICENSE"]
 readme = "README.md"
 requires-python = ">=3.9"
-dependencies = [
-	"ase",
-	"mopac"
-]
+#dependencies = [
+#	"ase",
+#	"mopac"
+#]
 
 [project.optional-dependencies]
 test = ["pytest>=7.0.0"]
