@@ -78,10 +78,13 @@ class TorchMDNetCalculator(Calculator):
         # Parent calculator call
         Calculator.calculate(self, atoms, properties, system_changes)
 
-        # Convert atomin cumbers to atom types
-        a_types = [
-            self.__class__.Z_TO_ATYPE[z] for z in self.atoms.get_atomic_numbers()
-        ]
+        # Convert atomic numbers to atom types
+        a_types = []
+        for z in self.atoms.get_atomic_numbers():
+            try:
+                a_types.append(self.__class__.Z_TO_ATYPE[z])
+            except KeyError:
+                raise RuntimeError(f"The system contains element not supported by PM6-ML - atomic number {z}")
 
         # Prepare coordinates
         coords = self.atoms.positions
